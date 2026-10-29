@@ -1,0 +1,6 @@
+.DS_Store
+.claude/
+*.log
+__pycache__/
+wireframes/
+shots/

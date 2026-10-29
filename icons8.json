@@ -1,0 +1,146 @@
+{
+  "version": 2,
+  "icons": {
+    "pack": "forma-regular",
+    "sizes": [
+      12,
+      16
+    ],
+    "color": "#62626B",
+    "items": {
+      "search": {
+        "id": "C09JPbdkQ56U",
+        "commonName": "search"
+      },
+      "menu": {
+        "id": "s5X3mMQFscOy",
+        "commonName": "menu"
+      },
+      "sleep": {
+        "id": "RqZDPsFYKyWN",
+        "commonName": "sleep"
+      },
+      "send": {
+        "id": "G7Ujm3KGvIqq",
+        "commonName": "up"
+      },
+      "attach": {
+        "id": "i1PiQepbTYbk",
+        "commonName": "attach"
+      },
+      "mic": {
+        "id": "kbYzjyZXeFT6",
+        "commonName": "microphone"
+      },
+      "settings": {
+        "id": "joMA2T1iP8wu",
+        "commonName": "settings"
+      },
+      "allow": {
+        "id": "mjbmZaqL8EJr",
+        "commonName": "checkmark"
+      },
+      "deny": {
+        "id": "Qgjnp78cDeJi",
+        "commonName": "delete-sign"
+      },
+      "stop": {
+        "id": "F4ozrcANZXFK",
+        "commonName": "stop"
+      },
+      "clock": {
+        "id": "i0JZUzTEcNXe",
+        "commonName": "clock"
+      },
+      "info": {
+        "id": "HyKDhVbpQqOT",
+        "commonName": "info"
+      },
+      "board": {
+        "id": "dgP9l9i4eeZV",
+        "commonName": "checklist"
+      },
+      "browser": {
+        "id": "JzT3hQt4K6YH",
+        "commonName": "open-in-browser"
+      },
+      "flow": {
+        "id": "IwtHxrFuX18I",
+        "commonName": "flow-chart"
+      },
+      "copy": {
+        "id": "9jzEy0n2rleA",
+        "commonName": "copy"
+      },
+      "reply": {
+        "id": "VKrv4hKyreHf",
+        "commonName": "undo"
+      },
+      "bell": {
+        "id": "ftMXZGFfen2R",
+        "commonName": "appointment-reminders"
+      },
+      "noentry": {
+        "id": "w0r5Nq4TJ6EA",
+        "commonName": "no-entry"
+      },
+      "keyboard": {
+        "id": "6MIgg8WXTZRf",
+        "commonName": "keyboard"
+      },
+      "chevron-down": {
+        "id": "PV7862g86VOa",
+        "commonName": "expand-arrow"
+      },
+      "more": {
+        "id": "f3LMVTxlMnYE",
+        "commonName": "more",
+        "platform": "forma-regular-filled"
+      },
+      "video-call": {
+        "id": "MCgU0vEzU84d",
+        "commonName": "video-call"
+      },
+      "trash": {
+        "id": "JRXkOTi0ElIu",
+        "commonName": "trash"
+      },
+      "plus": {
+        "id": "VqxLf3Y9RVLk",
+        "commonName": "plus-math"
+      },
+      "next-page": {
+        "id": "9Sopp4DKxAyT",
+        "commonName": "forward"
+      },
+      "shortcut": {
+        "id": "eXJarusvSTae",
+        "commonName": "shortcut"
+      },
+      "close": {
+        "id": "Qgjnp78cDeJi",
+        "commonName": "delete-sign"
+      },
+      "auto-sort": {
+        "id": "EVNIdw9lheVM",
+        "commonName": "generic-sorting"
+      },
+      "reset-groups": {
+        "id": "S7SKZVBPSZp3",
+        "commonName": "undo"
+      },
+      "folder": {
+        "id": "AMPR2zSwInml",
+        "commonName": "folder-invoices"
+      },
+      "queue": {
+        "id": "EVNIdw9lheVM",
+        "commonName": "generic-sorting"
+      },
+      "steer": {
+        "id": "mGWNJGGwrFlE",
+        "commonName": "u-turn-to-right"
+      }
+    }
+  }
+}

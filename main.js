@@ -204,6 +204,38 @@ export default function register(hub) {
     if (!now) tab.append(hub.el("span", "ce-n", String(n)));
     else if (now.textContent !== String(n)) now.textContent = String(n);
   };
+  // «В фоне · 19 мин»: строки под шапкой, которые ядро кладёт в .head-meta (фоновая работа, заметки мини-хаба), CSS прячет —
+  // шапка в одну строку; то же — чипом рядом со статусом, полный текст в подсказке (data-tip: с клавиатуры тоже).
+  // Сводка направления (.dir-recap) в чип не идёт — она на «Доске»
+  const BG = RU ? { one: "В фоне", min: "мин", h: "ч" } : { one: "In background", min: "min", h: "h" };
+  const bgLabel = (bgs) => {
+    if (bgs.length > 1) return `${BG.one} · ${bgs.length}`;
+    const m = Math.floor((Date.now() / 1000 - bgs[0].since) / 60);
+    return m < 1 ? BG.one : `${BG.one} · ${m < 60 ? `${m} ${BG.min}` : `${Math.floor(m / 60)} ${BG.h}`}`;
+  };
+  const headNote = () => {
+    const head = document.querySelector("main > .head"), now = head?.querySelector(":scope > .clean-bg");
+    const extra = [...(head?.querySelectorAll(":scope > .head-meta > :not(.dir-recap, .sep)") || [])];
+    if (!head || !extra.length) { now?.remove(); return; }
+    const name = head.querySelector("h2")?.title;
+    const bgs = (hub.snapshot?.()?.sessions || []).find((x) => x.name === name)?.background || [];
+    const live = [...bgs].sort((a, b) => a.since - b.since);
+    const label = live.length && extra[0].classList.contains("bg-line") ? bgLabel(live) : extra[0].textContent.trim();
+    const tip = extra.map((x) => x.textContent.trim()).join("\n");
+    let chip = now;
+    if (!chip) {
+      chip = hub.el("span", "chip clean-bg");
+      chip.tabIndex = 0;
+      chip.setAttribute("role", "note");
+      chip.append(hub.el("span", "clean-bg-t"));
+    }
+    const t = chip.firstElementChild;
+    if (t.textContent !== label) t.textContent = label;
+    if (chip.dataset.tip !== tip) { chip.dataset.tip = tip; chip.setAttribute("aria-label", tip.replace(/\n/g, ". ")); }
+    const pill = head.querySelector(":scope > .pill");
+    if (pill && chip.previousElementSibling !== pill) pill.after(chip);
+  };
+  setInterval(() => { if (on()) headNote(); }, 20000);   // минуты идут и без перерисовки ядра
   const unAvatars = () => {
     for (const av of document.querySelectorAll(".byline .av[data-clean-av]")) { delete av.dataset.cleanAv; av.style.removeProperty("--clean-av"); }
     for (const box of document.querySelectorAll(".reply-box[data-clean]")) {
@@ -365,7 +397,7 @@ export default function register(hub) {
   const sweep = () => {
     if (!on()) return;
     tagBylines(document); splitTabs(); rowTitles(); waitCounts(); chevrons(); maskIcons(); searchBox(); foldButtons(); emptySearch();
-    avatars(); boardCount(); groupTools(); fade(); feedEnd(); placeholders(); separators(); forkCounts(); sendButtons(); recBars(); actions(); queuePlate();
+    avatars(); boardCount(); headNote(); groupTools(); fade(); feedEnd(); placeholders(); separators(); forkCounts(); sendButtons(); recBars(); actions(); queuePlate();
   };
   let queued = false;   // лента меняется часто — не чаще кадра
   new MutationObserver(() => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; sweep(); }); } }).observe(document.body, { childList: true, subtree: true, characterData: true });
@@ -405,6 +437,30 @@ export default function register(hub) {
     },
   });
 
+  // значок сессии: ядро ставит попап на левый верхний угол аватарки, по которой кликнули (у DOMRect есть x и y), — и закрывает её.
+  // Тема сдвигает попап сразу после появления (до кадра): ниже аватарки, не влезает — выше, потом справа и слева.
+  // Окно для телефона — нижняя шторка ядра, там ничего не двигаем
+  let anchor = null;
+  addEventListener("pointerdown", () => { anchor = null; }, true);
+  addEventListener("click", (e) => { anchor = e.target.closest?.(".avatar, .head-av") || null; }, true);
+  const placePalette = (pop) => {
+    if (!on() || !anchor?.isConnected || matchMedia("(max-width: 760px)").matches) return;
+    const a = anchor.getBoundingClientRect(), r = pop.getBoundingClientRect(), G = 8, W = innerWidth, H = innerHeight;
+    const across = (v) => Math.max(G, Math.min(v, W - r.width - G)), along = (v) => Math.max(G, Math.min(v, H - r.height - G));
+    const spots = [
+      [a.bottom + G + r.height <= H - G, across(a.left), a.bottom + G],
+      [a.top - G - r.height >= G, across(a.left), a.top - G - r.height],
+      [a.right + G + r.width <= W - G, a.right + G, along(a.top)],
+      [a.left - G - r.width >= G, a.left - G - r.width, along(a.top)],
+    ];
+    const [, x, y] = spots.find((s) => s[0]) || spots[0];
+    pop.style.left = `${x}px`;
+    pop.style.top = `${y}px`;
+  };
+  new MutationObserver((list) => {
+    for (const m of list) for (const n of m.addedNodes) if (n.classList?.contains("palette") && n.classList.contains("gpop")) placePalette(n);
+  }).observe(document.body, { childList: true });
+
   const sync = () => {
     let id = "";
     try { id = JSON.parse(localStorage.getItem("hub.theme") || "null")?.id || ""; } catch { /* нет */ }
@@ -417,7 +473,7 @@ export default function register(hub) {
         unmaskIcons(); unAvatars(); fade(); feedEnd(); unPlaceholders(); unPlate();
         for (const h of document.querySelectorAll(".chat-head[data-clean-label]")) { h.removeAttribute("aria-label"); h.removeAttribute("title"); delete h.dataset.cleanLabel; }
 
-        for (const x of document.querySelectorAll(".search-row .clean-x, .clean-fold, .clean-fold-show, .clean-send, .clean-bars, .ce-n")) x.remove();
+        for (const x of document.querySelectorAll(".search-row .clean-x, .clean-bg, .clean-fold, .clean-fold-show, .clean-send, .clean-bars, .ce-n")) x.remove();
       }
       hub.redraw?.();
     }

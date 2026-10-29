@@ -19,7 +19,7 @@ Needs a hub with plugin API 1.30 or newer (the `code-bg` theme color).
 
 Sessions with one of these emoji get a character instead (`avatars` in `clean.json`):
 
-🤖 🧭 🧑‍💻 🔬 🎨 🧪 🧩 🖌️ ✍️ ⚙️ 🛠 💬 📊 🔎 🚀
+🤖 🧭 🧑‍💻 🔬 🎨 🧪 🧩 🖌️ ✍️ ⚙️ 🛠 💬 📊 🔎 🚀 ⚡ 🧊 🌙 🌊 🎉 🐛 🎧 🔮 🐜
 
 To give an agent another character, change its icon: the session row menu → Icon, or
 `hub session icon <name> <emoji>`. Your own pictures: put a file in `a/` and add an “emoji → file” pair to `avatars`

@@ -318,14 +318,24 @@ html.th-clean main > .head .chip:hover { background: var(--c-badge); }
    значок часов 12 через 4 от слов, цвет значка — текста бейджа (main.js переводит его в маску) */
 html.th-clean main > .head .chip.sched { gap: 4px; text-decoration: none; }
 html.th-clean main > .head .chip.sched .chip-glyph { flex: none; width: 12px; height: 12px; margin: 0; vertical-align: 0; color: var(--c-t2); }
+/* «В фоне · 19 мин» — чип рядом со статусом, размер и подложка как у «3 задачи в расписании»; длинное — многоточием внутри
+   (.clean-bg-t), полный текст — по наведению и с клавиатуры (подсказка своя, не title: родной висит) */
+html.th-clean main > .head .clean-bg { position: relative; flex: 0 1 auto; min-width: 0; max-width: 320px; cursor: default; }
+html.th-clean main > .head .clean-bg:hover { background: var(--c-fill); }   /* не кнопка: подложка при наведении не темнеет */
+html.th-clean main > .head .clean-bg-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+html.th-clean main > .head .clean-bg:is(:hover, :focus-visible)::after { content: attr(data-tip); position: absolute; z-index: 20; top: calc(100% + 6px); left: 0;
+  width: max-content; max-width: min(360px, calc(100vw - 32px)); padding: 8px 12px; border-radius: 8px; background: var(--card, var(--background)); color: var(--c-t1);
+  box-shadow: var(--shadow-lift), 0 0 0 1px var(--border); font: 400 12px/16px var(--font); white-space: pre-line; overflow-wrap: anywhere; pointer-events: none; }
 /* строка «Доска: открыто 3 · ждала: … · Спросить, чего ждёт» (ядро, dir-recap) не лежит под шапкой ленты: шапка — одна строка.
    Число открытых — бейджем на вкладке «Доска» (main.js), сама строка и кнопка «Спросить» — на доске, целиком и с переносом */
-html.th-clean main > .head .head-meta:has(> .dir-recap) { display: none; }
+/* всё, что ядро кладёт строкой под шапку (фоновая работа, «станет мини-хабом…», сводка направления), в ленте скрыто целиком:
+   шапка — одна строка. Фоновая работа и заметки мини-хаба — чипом рядом со статусом (main.js headNote) */
+html.th-clean main > .head .head-meta { display: none; }
 html.th-clean main:has(> .boards-body) > .head { padding-top: 12px; }
 html.th-clean main:has(> .boards-body) > .head .head-meta { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 0 0 12px;
   white-space: normal; overflow: visible; }
 html.th-clean main:has(> .boards-body) > .head .head-meta > * { overflow: visible; text-overflow: clip; }
-html.th-clean main:has(> .boards-body) > .head .head-meta > .sep { display: none; }
+html.th-clean main:has(> .boards-body) > .head .head-meta > :not(.dir-recap) { display: none; }
 html.th-clean main:has(> .boards-body) > .head .dir-recap { display: block; font: 400 12px/20px var(--font); }
 html.th-clean main:has(> .boards-body) > .head .dir-recap > * { display: inline; overflow: visible; text-overflow: clip; margin-right: 6px; }
 html.th-clean main:has(> .boards-body) > .head .dir-recap > .btn { display: inline-flex; vertical-align: top; height: 20px; }
@@ -965,8 +975,8 @@ html.th-clean .theme-row { border-radius: 12px; }
 html.th-clean input:not([type="checkbox"]):not([type="radio"]):not(#filter), html.th-clean select, html.th-clean textarea:not(#msg) { border-radius: 8px; }
 
 /* ---- значок сессии: только сетка аватаров темы, крупно — без заголовка, поля «Свой emoji», «Готово» и подписи (аватарки — картинки
-   из clean.json → avatars; эмодзи без картинки темы и поле своего значка в выборе не нужны). «Значок по умолчанию» (убрать значок) —
-   ячейкой сетки с крестиком, пока значок стоит; слова — для чтения с экрана ---- */
+   из clean.json → avatars; эмодзи без картинки темы и поле своего значка в выборе не нужны). «Убрать свой значок» — тихой строкой
+   на всю ширину под сеткой, пока значок стоит; положение попапа — main.js (не на аватарке, по которой кликнули) ---- */
 html.th-clean .gpop.palette { display: grid; grid-template-columns: repeat(4, 56px); gap: 4px; width: auto; min-width: 0; padding: 8px; }
 html.th-clean .gpop.palette > .gpop-t, html.th-clean .gpop.palette > .pal-own { display: none; }
 html.th-clean .gpop.palette > .pal-grid { display: contents; }
@@ -977,14 +987,14 @@ html.th-clean .pal-e .pal-av.kit-img { width: 44px; height: 44px; border-radius:
 html.th-clean .pal-e.on { box-shadow: none; }
 html.th-clean .pal-e.on .pal-av { box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--foreground); }   /* кольцо — вокруг картинки, не вокруг ячейки */
 html.th-clean .pal-e:focus-visible, html.th-clean .pal-reset:focus-visible { outline: 2px solid var(--c-ring); outline-offset: 2px; }
-html.th-clean .pal-reset { width: 56px; height: 56px; padding: 0; display: grid; place-items: center; border: 0; border-radius: 12px; font-size: 0; color: var(--c-t2); }
-html.th-clean .pal-reset::before { content: ""; width: 16px; height: 16px; background: currentColor;
-  -webkit-mask: url("close.svg") center / 16px no-repeat; mask: url("close.svg") center / 16px no-repeat; }
+html.th-clean .pal-reset { grid-column: 1 / -1; justify-self: stretch; width: 100%; min-height: 32px; margin-top: 4px; padding: 6px 8px; border: 0; border-radius: 8px; background: none;
+  font: 400 14px/20px var(--font); letter-spacing: -0.1px; color: var(--c-t2); text-align: center; cursor: pointer; }
 html.th-clean .pal-reset:hover { background: var(--c-hover); color: var(--c-t1); }
 html.th-clean .pal-reset:disabled { display: none; }
 @media (max-width: 760px) {
   html.th-clean .gpop.palette { grid-template-columns: repeat(4, minmax(0, 1fr)); justify-items: center; }
-  html.th-clean .pal-e, html.th-clean .pal-reset { width: 100%; max-width: 76px; height: 72px; }
+  html.th-clean .pal-e { width: 100%; max-width: 76px; height: 72px; }
+  html.th-clean .pal-reset { min-height: 44px; }
   html.th-clean .pal-e .pal-av.kit-img { width: 56px; height: 56px; border-radius: 12px; }
 }
 
@@ -1000,6 +1010,10 @@ html.th-clean .pal-reset:disabled { display: none; }
   html.th-clean main > .head { padding: 0 16px; }
   html.th-clean main > .banner.on { padding: 8px 16px; }
   html.th-clean main > .head .chips { display: none; }
+  html.th-clean main > .head .clean-bg { max-width: 108px; }   /* шапка на телефоне — две строки; во второй чип с «Кратко | Подробно», лупой и «Ещё» должен остаться в ней */
+  html.th-clean main > .head { position: relative; }
+  html.th-clean main > .head .clean-bg { position: static; }   /* подсказка — во всю ширину шапки, а не от края чипа: он у правого края */
+  html.th-clean main > .head .clean-bg:is(:hover, :focus-visible)::after { left: 8px; right: 8px; top: calc(100% + 4px); width: auto; max-width: none; }
   html.th-clean .feed { padding: 16px 16px 24px; }
   html.th-clean .row.out > .b { padding-right: 0; }
   html.th-clean .dock { padding: 0 12px 8px; }

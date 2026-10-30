@@ -622,9 +622,12 @@ html.th-clean :is(.btn.round.quiet:is(.attach, .mic), .composer .bar > .btn.roun
 html.th-clean .btn.round:is(.attach, .mic) .icon { width: 16px; height: 16px; }
 /* кнопки плагинов в поле ввода (место composer.tools): как микрофон — 32, радиус 8, значок 16; ядро кладёт их общую ширину в --tools-w
    на .dock-inner, и строка статуса (модель, усилие) уступает им место */
-html.th-clean .slot-composer-tools .btn.round { box-sizing: border-box; width: 32px; min-width: 0; height: 32px; min-height: 0; padding: 0; border: 0; border-radius: 8px; background: none; color: var(--muted-foreground); }
-html.th-clean .slot-composer-tools .btn.round:hover { background: var(--c-fill); color: var(--c-t1); }
-html.th-clean .slot-composer-tools .btn.round > :is(span, svg) { width: 16px; height: 16px; }
+html.th-clean .slot-composer-tools .btn.round { box-sizing: border-box; min-width: 0; height: 32px; min-height: 0; border: 0; border-radius: 8px; background: none; }
+html.th-clean .slot-composer-tools .btn.round:hover { background: var(--c-fill); }
+/* only a button that holds nothing but an icon is a 32 px square; a button with text (a dot and a timer) keeps its own width and colour */
+html.th-clean .slot-composer-tools .btn.round:has(> :is(svg, .icon):only-child) { width: 32px; padding: 0; color: var(--muted-foreground); }
+html.th-clean .slot-composer-tools .btn.round:has(> :is(svg, .icon):only-child):hover { color: var(--c-t1); }
+html.th-clean .slot-composer-tools .btn.round > :is(svg, .icon) { width: 16px; height: 16px; }
 html.th-clean .btn.round.send { width: 32px; height: 32px; border-radius: 8px; background: var(--foreground); }
 html.th-clean .btn.round.send:hover { background: color-mix(in oklch, var(--foreground) 85%, var(--background)); }
 html.th-clean .btn.round.send .icon { width: 16px; height: 16px; }
@@ -1027,7 +1030,8 @@ html.th-clean .pal-reset:disabled { display: none; }
   html.th-clean .strip-row[data-k="wait"] { padding-inline: 20px; }   /* лента с полями 16, поле ввода с 12 — полоса «Ждёт вас» шире карточки на 4 */
   html.th-clean .row.mine > .b { width: auto; max-width: 88%; }
   html.th-clean .btn.round.send, html.th-clean .btn.round.quiet:is(.attach, .mic), html.th-clean .composer .bar > .btn.round.mic { width: 36px; height: 36px; }
-  html.th-clean .vf-slot > .btn.round, html.th-clean .slot-composer-tools .btn.round { width: 36px; height: 36px; }
+  html.th-clean .vf-slot > .btn.round, html.th-clean .slot-composer-tools .btn.round:has(> :is(svg, .icon):only-child) { width: 36px; height: 36px; }
+  html.th-clean .slot-composer-tools .btn.round { height: 36px; }
   html.th-clean .status > .stat-left > .stat-dir { display: none; }
 }
 

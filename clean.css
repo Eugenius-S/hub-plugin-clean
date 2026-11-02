@@ -855,6 +855,16 @@ html.th-clean .dock-inner:has(form.composer.rec) form.composer .bar { padding-le
      The model label («Opus 5.5») is not shortened by the theme: the row holds only executors, model and effort (the folder
      sits in the tab above), so there is room; below 520 px the core shortens it itself. */
   @container status (max-width: 680px) { html.th-clean .par-long { display: none; } html.th-clean .par-short { display: inline; } }
+  /* The same room problem for the rest of the row: with three or more plugin buttons the chips (executors, model, effort) are
+     wider than what is left between «+» and the buttons, and the row ran left over «+». The steps copy what the core does at 520 px
+     (effort goes into the model menu, the model gives way to the executors), only earlier, by the width the buttons take.
+     Below 480 px nothing fits next to the buttons: the chips are hidden; once the core wraps the button row (under 390 px) the
+     row under it is free again and the executors chip comes back. */
+  @container status (max-width: 660px) { html.th-clean .dock-inner:has(> form.composer .slot-composer-tools ~ .slot-composer-tools ~ .slot-composer-tools) .status > .stat-eff { display: none; } html.th-clean .dock-inner:has(> form.composer .slot-composer-tools ~ .slot-composer-tools ~ .slot-composer-tools) .stat-mod .mod-eff { display: block; }
+    html.th-clean .dock-inner:has(> form.composer .slot-composer-tools ~ .slot-composer-tools ~ .slot-composer-tools) .status > .stat-mod:has(+ .stat-eff)::after { content: none; } }
+  @container status (max-width: 590px) { html.th-clean .dock-inner:has(> form.composer .slot-composer-tools ~ .slot-composer-tools ~ .slot-composer-tools) .status > .stat-par + .stat-mod { display: none; } }
+  @container status (min-width: 389px) and (max-width: 480px) { html.th-clean .dock-inner:has(> form.composer .slot-composer-tools ~ .slot-composer-tools ~ .slot-composer-tools) .status > :is(.stat-par, .stat-mod, .stat-eff) { display: none; } }
+  @container status (max-width: 388px) { html.th-clean .dock-inner:has(> form.composer .slot-composer-tools ~ .slot-composer-tools ~ .slot-composer-tools) .status { padding-right: var(--tail); } }
   html.th-clean :is(.stat-par, .stat-mod, .stat-eff) > .menu-btn { height: 28px; padding: 0 8px; border-radius: 8px; line-height: 28px; }
   html.th-clean :is(.stat-par, .stat-mod, .stat-eff) > .menu { left: auto; right: 0; }
   html.th-clean .dock-inner:has(form.composer.rec) .status > :is(.stat-par, .stat-mod, .stat-eff) { display: none; }   /* идёт запись голоса: полоса записи на весь ряд, меню модели не нужны */

@@ -718,7 +718,7 @@ html.th-clean .composer .bar > .btn.round.mic { width: 32px; min-width: 0; heigh
 }
 html.th-clean .btn.round:is(.attach, .mic) .icon { width: 16px; height: 16px; }
 /* кнопки плагинов в поле ввода (место composer.tools): как микрофон — 32, радиус 8, значок 16; ядро кладёт их общую ширину в --tools-w
-   на .dock-inner, и строка статуса (модель, усилие) уступает им место */
+   на .dock-inner, и строка статуса (модель, усилие) уступает им место; +8px зазора от первой кнопки (без кнопок --tools-w не задан: -8px + 8px = 0) */
 html.th-clean .slot-composer-tools .btn.round { box-sizing: border-box; min-width: 0; height: 32px; min-height: 0; border: 0; border-radius: 8px; background: none; }
 @media (hover: hover) and (pointer: fine) {
   html.th-clean .slot-composer-tools .btn.round:hover { background: var(--c-fill); }
@@ -847,7 +847,7 @@ html.th-clean .dock-inner:has(form.composer.rec) form.composer .bar { padding-le
     -webkit-mask: url("folder.svg") center / 12px no-repeat; mask: url("folder.svg") center / 12px no-repeat; }
   /* модель и усилие — на нижнем ряду карточки, справа перед микрофоном: статус поднимается на ряд (его место — под карточкой,
      6 зазора + ряд + 12 поля снизу), без «·» между частями; «Отправить» и микрофон — над ним (z-index карточки 1, у кнопок 2) */
-  html.th-clean .dock-inner:has(> form.composer) .status { order: 3; height: var(--row); margin: calc(-1 * (var(--row) + 12px + 6px)) 0 0; padding: 0 calc(var(--tail) + var(--tools-w, 0px)) 0 52px;
+  html.th-clean .dock-inner:has(> form.composer) .status { order: 3; height: var(--row); margin: calc(-1 * (var(--row) + 12px + 6px)) 0 0; padding: 0 calc(var(--tail) + var(--tools-w, -8px) + 8px) 0 52px;
     justify-content: flex-end; align-items: center; gap: 2px; pointer-events: none; }
   html.th-clean .dock-inner:has(> form.composer) .status > :is(.stat-par, .stat-mod, .stat-eff) { position: relative; z-index: 2; margin: 0; pointer-events: auto; }
   html.th-clean .status > :is(.stat-par, .stat-mod, .stat-eff)::after { content: none !important; }
